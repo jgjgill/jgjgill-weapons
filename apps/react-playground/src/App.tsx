@@ -2,7 +2,9 @@ import { add } from "@jgjgill/math";
 import { useUnmount } from "@jgjgill/hooks";
 
 function App() {
-  useUnmount();
+  useUnmount(() => {
+    console.log("unmount");
+  });
   return (
     <div>
       <h2>hello world jgjgill</h2>
