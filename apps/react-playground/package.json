@@ -15,7 +15,6 @@
   },
   "devDependencies": {
     "@jgjgill/eslint-config": "workspace:*",
-    "@jgjgill/math": "workspace:*",
     "@jgjgill/typescript-config": "workspace:*",
     "@jgjgill/hooks": "workspace:*",
     "@eslint/js": "^9.9.0",

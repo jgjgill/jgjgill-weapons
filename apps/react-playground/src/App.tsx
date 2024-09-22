@@ -1,4 +1,3 @@
-import { add } from "@jgjgill/math";
 import { useUnmount } from "@jgjgill/hooks";
 
 function App() {
@@ -8,7 +7,6 @@ function App() {
   return (
     <div>
       <h2>hello world jgjgill</h2>
-      {add(1, 4)}
     </div>
   );
 }
