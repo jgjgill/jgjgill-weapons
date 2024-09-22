@@ -1,9 +1,9 @@
 import { useUnmount } from "./useUnmount";
 
 export default function Component() {
-  useUnmount(() => {
-    // cleanup 로직
-  });
+	useUnmount(() => {
+		// cleanup 로직
+	});
 
-  return <div>Hello World!</div>;
+	return <div>Hello World!</div>;
 }
