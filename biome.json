@@ -5,10 +5,6 @@
 		"clientKind": "git",
 		"useIgnoreFile": false
 	},
-	"files": {
-		"ignoreUnknown": false,
-		"ignore": []
-	},
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab"
@@ -26,5 +22,16 @@
 		"formatter": {
 			"quoteStyle": "double"
 		}
+	},
+	"files": {
+		"ignoreUnknown": false,
+		"ignore": [
+			".changeset/**",
+			".github/**",
+			".vscode/**",
+			"package.json",
+			"tsconfig.*.json",
+			"dist"
+		]
 	}
 }
