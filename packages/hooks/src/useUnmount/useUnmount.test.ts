@@ -12,10 +12,10 @@ describe("useUnmount", () => {
 
     expect(cleanupMock).not.toHaveBeenCalled();
 
-    // act(() => {
-    //   unmount();
-    // });
+    act(() => {
+      unmount();
+    });
 
-    // expect(cleanupMock).toHaveBeenCalled();
+    expect(cleanupMock).toHaveBeenCalled();
   });
 });
