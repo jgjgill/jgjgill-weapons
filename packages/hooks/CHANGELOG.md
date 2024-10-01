@@ -1,5 +1,11 @@
 # @jgjgill/hooks
 
+## 1.0.4
+
+### Patch Changes
+
+- add useIsChanged, usePrevious
+
 ## 1.0.3
 
 ### Patch Changes

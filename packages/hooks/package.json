@@ -1,7 +1,7 @@
 {
 	"name": "@jgjgill/hooks",
 	"private": false,
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "",
 	"main": "./dist/index.js",
 	"module": "./dist/index.mjs",
@@ -21,7 +21,9 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"dev": "tsup src/index.ts --format cjs,esm --dts --watch",
 		"build": "tsup src/index.ts --format cjs,esm --dts",
