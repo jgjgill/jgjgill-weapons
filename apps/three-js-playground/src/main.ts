@@ -1,32 +1,12 @@
-import {
-	OrbitControls,
-	RGBELoader,
-	RectAreaLightHelper,
-	RectAreaLightUniformsLib,
-} from "three/examples/jsm/Addons.js";
+import { AsciiEffect, OrbitControls } from "three/examples/jsm/Addons.js";
 import "./style.css";
 import * as THREE from "three";
-import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 class App {
 	private renderer: THREE.WebGLRenderer;
 	private domApp: Element;
 	private scene: THREE.Scene;
 	private camera?: THREE.PerspectiveCamera;
-	/*
-	private light?: THREE.DirectionalLight;
-	private helper?: THREE.DirectionalLightHelper;
-	*/
-
-	/*
-	private light?: THREE.PointLight;
-	private helper?: THREE.PointLightHelper;
-	*/
-
-	/*
-	private light?: THREE.SpotLight;
-	private helper?: THREE.SpotLightHelper;
-	*/
 
 	constructor() {
 		//  계단 현상(jagged edges)을 줄이기 위해 사용하는 기술
@@ -51,82 +31,38 @@ class App {
 		const height = this.domApp.clientHeight;
 
 		// width / height: 카메라 렌즈의 가로에 대한 세로 비율값
-		this.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 100);
-		this.camera.position.z = 5;
+		this.camera = new THREE.PerspectiveCamera(
+			75, // Fov
+			width / height, // Aspect, resize 함수에서도 camera.aspect로 적용
+			0.1, // zNear
+			100, // zFar
+		);
 
-		new OrbitControls(this.camera, this.domApp as HTMLElement);
+		// const aspect = width / height;
+		// this.camera = new THREE.OrthographicCamera(
+		// 	-1 * aspect, // xLeft
+		// 	1 * aspect, // xRight
+		// 	1, // yTop
+		// 	-1, // yBottom
+		// 	0.1, // zNear
+		// 	100, // zFar
+		// );
+
+		// this.camera.zoom = 0.2;
+
+		this.camera.position.set(2, 2, 3.5);
+		this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+		// new OrbitControls(this.camera, this.domApp as HTMLElement);
 	}
 
 	private setupLight() {
-		// const light = new THREE.AmbientLight("#ffffff", 0.1);
-		// const light = new THREE.HemisphereLight("#b0d8f5", "#bb7a1c", 1);
-		/*
-		const light = new THREE.DirectionalLight(0xffffff, 1);
-		light.position.set(0, 1, 0);
-		light.target.position.set(0, 0, 0);
-
-		this.scene.add(light.target);
-		this.light = light;
-
-		const helper = new THREE.DirectionalLightHelper(light);
-		this.scene.add(helper);
-		this.helper = helper;
+		const color = 0xffffff;
+		const intensity = 1;
+		const light = new THREE.DirectionalLight(color, intensity);
+		light.position.set(-1, 2, 4);
 
 		this.scene.add(light);
-		*/
-		/*
-		const light = new THREE.PointLight(0xffffff, 20);
-		light.position.set(0, 5, 0);
-		light.distance = 6;
-		this.scene.add(light);
-		this.light = light;
-
-		const helper = new THREE.PointLightHelper(light);
-		this.helper = helper;
-
-		this.scene.add(helper);
-		*/
-		/*
-		const light = new THREE.SpotLight(0xffffff, 5);
-		light.position.set(0, 5, 0);
-		light.target.position.set(0, 0, 0);
-		light.angle = THREE.MathUtils.degToRad(40);
-		light.penumbra = 0;
-		this.scene.add(light);
-		this.scene.add(light.target);
-
-		const helper = new THREE.SpotLightHelper(light);
-		this.scene.add(helper);
-
-		this.light = light;
-		this.helper = helper;
-
-		const gui = new GUI();
-		gui
-			.add(light, "angle", 0, Math.PI / 2, 0.01)
-			.onChange(() => helper.update());
-		gui.add(light, "penumbra", 0, 1, 0.01).onChange(() => helper.update());
-		*/
-
-		/*
-		RectAreaLightUniformsLib.init();
-		const light = new THREE.RectAreaLight(0xffffff, 10, 3, 0.5);
-		light.position.set(0, 5, 0);
-		light.rotation.x = THREE.MathUtils.degToRad(-90);
-		this.scene.add(light);
-
-		const helper = new RectAreaLightHelper(light);
-		light.add(helper);
-		*/
-
-		new RGBELoader().load("./hayloft_2k.hdr", (texture) => {
-			texture.mapping = THREE.EquirectangularReflectionMapping;
-			this.scene.environment = texture; // 광원
-			this.scene.background = texture; // 배경
-
-			this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-			this.renderer.toneMappingExposure = 0.4;
-		});
 	}
 
 	private setupModels() {
@@ -183,6 +119,18 @@ class App {
 		smallSpherePivot.position.y = 0.5;
 		smallSpherePivot.name = "smallSpherePivot";
 
+		// 새로운 빨간색 구를 추가
+		// const smallSphere2 = new THREE.Mesh(geomSmallSphere, matSmallSphere);
+		const smallSphere2 = new THREE.Object3D();
+
+		const smallSpherePivot2 = new THREE.Object3D();
+		smallSpherePivot2.add(smallSphere2);
+		bigSphere.add(smallSpherePivot2);
+		smallSphere2.position.x = 2;
+		smallSpherePivot2.rotation.y = THREE.MathUtils.degToRad(-45);
+		smallSpherePivot2.position.y = 0.5;
+		smallSpherePivot2.name = "targetPivot";
+
 		const cntItems = 8;
 		const geomTorus = new THREE.TorusGeometry(0.3, 0.1);
 		const matTorus = new THREE.MeshStandardMaterial({
@@ -219,6 +167,11 @@ class App {
 
 		if (camera) {
 			camera.aspect = width / height;
+			// const aspect = width / height;
+
+			// camera.left = -1 * aspect;
+			// camera.right = 1 * aspect;
+
 			camera.updateProjectionMatrix();
 		}
 
@@ -238,23 +191,28 @@ class App {
 
 			// smallSpherePivot.quaternion.setFromEuler(euler);
 
-			const smallSphere = smallSpherePivot.children[0];
+			const redSphere = smallSpherePivot.children[0];
+			const redSpherePos = new THREE.Vector3();
+			redSphere.getWorldPosition(redSpherePos);
 
-			/*
-			smallSphere.getWorldPosition(this.light!.target.position);
-			this.helper!.update();
-			*/
+			// this.camera?.lookAt(redSpherePos);
+			this.camera?.position.copy(redSpherePos);
 
-			/*
-			smallSphere.getWorldPosition(this.light!.position);
-			this.helper!.update();
-			*/
+			const smallSpherePivot2 = this.scene.getObjectByName("targetPivot");
+			if (smallSpherePivot2) {
+				const euler2 = new THREE.Euler(
+					0,
+					time + THREE.MathUtils.degToRad(10),
+					0,
+				);
+				const quaterion2 = new THREE.Quaternion().setFromEuler(euler2);
+				smallSpherePivot2.setRotationFromQuaternion(quaterion2);
 
-			/*
-			// SpotLight
-			smallSphere.getWorldPosition(this.light!.target.position);
-			this.helper!.update();
-			*/
+				const nextPos = smallSpherePivot2.children[0];
+				const cameraTarget = new THREE.Vector3();
+				nextPos.getWorldPosition(cameraTarget);
+				this.camera?.lookAt(cameraTarget);
+			}
 		}
 	}
 
