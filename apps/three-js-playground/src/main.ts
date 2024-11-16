@@ -1,6 +1,11 @@
-import { OrbitControls } from "three/examples/jsm/Addons.js";
+import {
+	OrbitControls,
+	RGBELoader,
+	VertexNormalsHelper,
+} from "three/examples/jsm/Addons.js";
 import "./style.css";
 import * as THREE from "three";
+import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 class App {
 	private renderer: THREE.WebGLRenderer;
@@ -32,76 +37,82 @@ class App {
 
 		// width / height: 카메라 렌즈의 가로에 대한 세로 비율값
 		this.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 100);
-		this.camera.position.z = 5;
+		this.camera.position.z = 4;
 
 		new OrbitControls(this.camera, this.domApp as HTMLElement);
 	}
 
 	private setupLight() {
-		const color = 0xffffff;
-		const intensity = 1;
-		const light = new THREE.DirectionalLight(color, intensity);
-		light.position.set(-1, 2, 4);
-
+		const light = new THREE.DirectionalLight(0xffffff, 1);
+		light.position.set(1, 2, 1);
 		this.scene.add(light);
+
+		const rgbeLoader = new RGBELoader();
+		rgbeLoader.load("./photo_studio_broadway_hall_2k.hdr", (environmentMap) => {
+			environmentMap.mapping = THREE.EquirectangularReflectionMapping;
+			this.scene.background = environmentMap;
+			this.scene.environment = environmentMap;
+		});
 	}
 
 	private setupModels() {
-		const axisHelper = new THREE.AxesHelper(10);
-		this.scene.add(axisHelper);
+		const textureLoader = new THREE.TextureLoader();
+		const textureCard = textureLoader.load("./og-image.png");
 
-		const geomGround = new THREE.PlaneGeometry(5, 5);
-		const matGround = new THREE.MeshStandardMaterial();
-		const ground = new THREE.Mesh(geomGround, matGround);
+		const map = textureLoader.load("./Glass_Window_002_basecolor.jpg");
+		map.colorSpace = THREE.SRGBColorSpace;
 
-		ground.rotation.x = -THREE.MathUtils.degToRad(90);
-		ground.position.y = -0.5;
+		const mapAO = textureLoader.load("./Glass_Window_002_ambientOcclusion.jpg");
+		const mapHeight = textureLoader.load("./Glass_Window_002_height.png");
+		const mapNormal = textureLoader.load("./Glass_Window_002_normal.jpg");
+		const mapRoughness = textureLoader.load("./Glass_Window_002_roughness.jpg");
+		const mapMetalic = textureLoader.load("./Glass_Window_002_metallic.jpg");
+		const mapAlpha = textureLoader.load("./Glass_Window_002_opacity.jpg");
 
-		this.scene.add(ground);
+		const material = new THREE.MeshStandardMaterial({
+			map: map,
+			normalMap: mapNormal,
+			normalScale: new THREE.Vector2(10, 10),
+			displacementMap: mapHeight,
+			displacementScale: 0.2,
+			displacementBias: -0.15,
+			aoMap: mapAO,
+			aoMapIntensity: 1.5,
+			roughnessMap: mapRoughness,
+			roughness: 0.8,
+			metalnessMap: mapMetalic,
+			metalness: 0.9,
+			alphaMap: mapAlpha,
+			transparent: true,
+			side: THREE.DoubleSide,
+		});
 
-		const geomBigSphere = new THREE.SphereGeometry(
-			1,
-			32,
-			16,
-			0,
-			THREE.MathUtils.degToRad(360),
-			0,
-			THREE.MathUtils.degToRad(90),
-		);
-		const matBigSphere = new THREE.MeshStandardMaterial();
-		const bigSphere = new THREE.Mesh(geomBigSphere, matBigSphere);
-		bigSphere.position.y = -0.5;
+		const materialCard = new THREE.MeshStandardMaterial({
+			map: textureCard,
+			side: THREE.DoubleSide,
+		});
+		textureCard.colorSpace = THREE.SRGBColorSpace;
 
-		this.scene.add(bigSphere);
+		const geomePlane = new THREE.BoxGeometry(9, 5, 0.1);
+		const plane = new THREE.Mesh(geomePlane, materialCard);
+		plane.position.x = -8;
+		this.scene.add(plane);
 
-		const geomSmallSphere = new THREE.SphereGeometry(0.2);
-		const matSmallSphere = new THREE.MeshStandardMaterial();
-		const smallSphere = new THREE.Mesh(geomSmallSphere, matSmallSphere);
+		const geomBox = new THREE.BoxGeometry(1, 1, 1, 256, 256, 256);
+		const box = new THREE.Mesh(geomBox, material);
+		box.position.x = -1;
+		this.scene.add(box);
 
-		const smallSpherePivot = new THREE.Object3D();
-		smallSpherePivot.add(smallSphere);
-		bigSphere.add(smallSpherePivot);
+		const geomSphere = new THREE.SphereGeometry(0.6, 512, 256);
+		const sphere = new THREE.Mesh(geomSphere, material);
+		sphere.position.x = 1;
+		this.scene.add(sphere);
 
-		smallSphere.position.x = 2;
-		smallSpherePivot.rotation.y = THREE.MathUtils.degToRad(-45);
-		smallSpherePivot.position.y = 0.5;
-		smallSpherePivot.name = "smallSpherePivot";
+		// const boxHelper = new VertexNormalsHelper(box, 0.1, 0xffff00);
+		// this.scene.add(boxHelper);
 
-		const cntItems = 8;
-		const geomTorus = new THREE.TorusGeometry(0.3, 0.1);
-		const matTorus = new THREE.MeshStandardMaterial();
-
-		for (let i = 0; i < cntItems; i++) {
-			const torus = new THREE.Mesh(geomTorus, matTorus);
-			const torusPivot = new THREE.Object3D();
-
-			torusPivot.add(torus);
-			bigSphere.add(torusPivot);
-
-			torus.position.x = 2;
-			torusPivot.position.y = 0.5;
-			torusPivot.rotation.y = (THREE.MathUtils.degToRad(360) / cntItems) * i;
-		}
+		// const sphereHelper = new VertexNormalsHelper(sphere, 0.1, 0xffff00);
+		// this.scene.add(sphereHelper);
 	}
 
 	private setupEvents() {
@@ -127,17 +138,6 @@ class App {
 
 	private update(time: number) {
 		time *= 0.001;
-
-		const smallSpherePivot = this.scene.getObjectByName("smallSpherePivot");
-
-		if (smallSpherePivot) {
-			// smallSpherePivot.rotation.y = time;
-			const euler = new THREE.Euler(0, time, 0);
-			const quaterion = new THREE.Quaternion().setFromEuler(euler);
-			smallSpherePivot.setRotationFromQuaternion(quaterion);
-
-			// smallSpherePivot.quaternion.setFromEuler(euler);
-		}
 	}
 
 	private render(time: number) {
