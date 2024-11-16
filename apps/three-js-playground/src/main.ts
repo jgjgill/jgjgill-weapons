@@ -1,7 +1,8 @@
 import {
 	OrbitControls,
 	RGBELoader,
-	VertexNormalsHelper,
+	RectAreaLightHelper,
+	RectAreaLightUniformsLib,
 } from "three/examples/jsm/Addons.js";
 import "./style.css";
 import * as THREE from "three";
@@ -12,6 +13,20 @@ class App {
 	private domApp: Element;
 	private scene: THREE.Scene;
 	private camera?: THREE.PerspectiveCamera;
+	/*
+	private light?: THREE.DirectionalLight;
+	private helper?: THREE.DirectionalLightHelper;
+	*/
+
+	/*
+	private light?: THREE.PointLight;
+	private helper?: THREE.PointLightHelper;
+	*/
+
+	/*
+	private light?: THREE.SpotLight;
+	private helper?: THREE.SpotLightHelper;
+	*/
 
 	constructor() {
 		//  계단 현상(jagged edges)을 줄이기 위해 사용하는 기술
@@ -37,82 +52,156 @@ class App {
 
 		// width / height: 카메라 렌즈의 가로에 대한 세로 비율값
 		this.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 100);
-		this.camera.position.z = 4;
+		this.camera.position.z = 5;
 
 		new OrbitControls(this.camera, this.domApp as HTMLElement);
 	}
 
 	private setupLight() {
+		// const light = new THREE.AmbientLight("#ffffff", 0.1);
+		// const light = new THREE.HemisphereLight("#b0d8f5", "#bb7a1c", 1);
+		/*
 		const light = new THREE.DirectionalLight(0xffffff, 1);
-		light.position.set(1, 2, 1);
+		light.position.set(0, 1, 0);
+		light.target.position.set(0, 0, 0);
+
+		this.scene.add(light.target);
+		this.light = light;
+
+		const helper = new THREE.DirectionalLightHelper(light);
+		this.scene.add(helper);
+		this.helper = helper;
+
+		this.scene.add(light);
+		*/
+		/*
+		const light = new THREE.PointLight(0xffffff, 20);
+		light.position.set(0, 5, 0);
+		light.distance = 6;
+		this.scene.add(light);
+		this.light = light;
+
+		const helper = new THREE.PointLightHelper(light);
+		this.helper = helper;
+
+		this.scene.add(helper);
+		*/
+		/*
+		const light = new THREE.SpotLight(0xffffff, 5);
+		light.position.set(0, 5, 0);
+		light.target.position.set(0, 0, 0);
+		light.angle = THREE.MathUtils.degToRad(40);
+		light.penumbra = 0;
+		this.scene.add(light);
+		this.scene.add(light.target);
+
+		const helper = new THREE.SpotLightHelper(light);
+		this.scene.add(helper);
+
+		this.light = light;
+		this.helper = helper;
+
+		const gui = new GUI();
+		gui
+			.add(light, "angle", 0, Math.PI / 2, 0.01)
+			.onChange(() => helper.update());
+		gui.add(light, "penumbra", 0, 1, 0.01).onChange(() => helper.update());
+		*/
+
+		/*
+		RectAreaLightUniformsLib.init();
+		const light = new THREE.RectAreaLight(0xffffff, 10, 3, 0.5);
+		light.position.set(0, 5, 0);
+		light.rotation.x = THREE.MathUtils.degToRad(-90);
 		this.scene.add(light);
 
-		const rgbeLoader = new RGBELoader();
-		rgbeLoader.load("./photo_studio_broadway_hall_2k.hdr", (environmentMap) => {
-			environmentMap.mapping = THREE.EquirectangularReflectionMapping;
-			this.scene.background = environmentMap;
-			this.scene.environment = environmentMap;
+		const helper = new RectAreaLightHelper(light);
+		light.add(helper);
+		*/
+
+		new RGBELoader().load("./hayloft_2k.hdr", (texture) => {
+			texture.mapping = THREE.EquirectangularReflectionMapping;
+			this.scene.environment = texture; // 광원
+			this.scene.background = texture; // 배경
+
+			this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+			this.renderer.toneMappingExposure = 0.4;
 		});
 	}
 
 	private setupModels() {
-		const textureLoader = new THREE.TextureLoader();
-		const textureCard = textureLoader.load("./og-image.png");
+		const axisHelper = new THREE.AxesHelper(10);
+		this.scene.add(axisHelper);
 
-		const map = textureLoader.load("./Glass_Window_002_basecolor.jpg");
-		map.colorSpace = THREE.SRGBColorSpace;
+		const geomGround = new THREE.PlaneGeometry(5, 5);
+		const matGround = new THREE.MeshStandardMaterial({
+			color: "#2c3e50",
+			roughness: 0.5,
+			metalness: 0.5,
+			side: THREE.DoubleSide,
+		});
+		const ground = new THREE.Mesh(geomGround, matGround);
 
-		const mapAO = textureLoader.load("./Glass_Window_002_ambientOcclusion.jpg");
-		const mapHeight = textureLoader.load("./Glass_Window_002_height.png");
-		const mapNormal = textureLoader.load("./Glass_Window_002_normal.jpg");
-		const mapRoughness = textureLoader.load("./Glass_Window_002_roughness.jpg");
-		const mapMetalic = textureLoader.load("./Glass_Window_002_metallic.jpg");
-		const mapAlpha = textureLoader.load("./Glass_Window_002_opacity.jpg");
+		ground.rotation.x = -THREE.MathUtils.degToRad(90);
+		ground.position.y = -0.5;
 
-		const material = new THREE.MeshStandardMaterial({
-			map: map,
-			normalMap: mapNormal,
-			normalScale: new THREE.Vector2(10, 10),
-			displacementMap: mapHeight,
-			displacementScale: 0.2,
-			displacementBias: -0.15,
-			aoMap: mapAO,
-			aoMapIntensity: 1.5,
-			roughnessMap: mapRoughness,
-			roughness: 0.8,
-			metalnessMap: mapMetalic,
+		this.scene.add(ground);
+
+		const geomBigSphere = new THREE.SphereGeometry(
+			1,
+			32,
+			16,
+			0,
+			THREE.MathUtils.degToRad(360),
+			0,
+			THREE.MathUtils.degToRad(90),
+		);
+		const matBigSphere = new THREE.MeshStandardMaterial({
+			color: "#ffffff",
+			roughness: 0,
+			metalness: 0.2,
+		});
+		const bigSphere = new THREE.Mesh(geomBigSphere, matBigSphere);
+		bigSphere.position.y = -0.5;
+
+		this.scene.add(bigSphere);
+
+		const geomSmallSphere = new THREE.SphereGeometry(0.2);
+		const matSmallSphere = new THREE.MeshStandardMaterial({
+			color: "#e74c3c",
+			roughness: 0.2,
+			metalness: 0.5,
+		});
+		const smallSphere = new THREE.Mesh(geomSmallSphere, matSmallSphere);
+
+		const smallSpherePivot = new THREE.Object3D();
+		smallSpherePivot.add(smallSphere);
+		bigSphere.add(smallSpherePivot);
+
+		smallSphere.position.x = 2;
+		smallSpherePivot.rotation.y = THREE.MathUtils.degToRad(-45);
+		smallSpherePivot.position.y = 0.5;
+		smallSpherePivot.name = "smallSpherePivot";
+
+		const cntItems = 8;
+		const geomTorus = new THREE.TorusGeometry(0.3, 0.1);
+		const matTorus = new THREE.MeshStandardMaterial({
+			color: "#9b59b5",
+			roughness: 0.5,
 			metalness: 0.9,
-			alphaMap: mapAlpha,
-			transparent: true,
-			side: THREE.DoubleSide,
 		});
 
-		const materialCard = new THREE.MeshStandardMaterial({
-			map: textureCard,
-			side: THREE.DoubleSide,
-		});
-		textureCard.colorSpace = THREE.SRGBColorSpace;
+		for (let i = 0; i < cntItems; i++) {
+			const torus = new THREE.Mesh(geomTorus, matTorus);
+			const torusPivot = new THREE.Object3D();
 
-		const geomePlane = new THREE.BoxGeometry(9, 5, 0.1);
-		const plane = new THREE.Mesh(geomePlane, materialCard);
-		plane.position.x = -8;
-		this.scene.add(plane);
+			torusPivot.add(torus);
+			bigSphere.add(torusPivot);
 
-		const geomBox = new THREE.BoxGeometry(1, 1, 1, 256, 256, 256);
-		const box = new THREE.Mesh(geomBox, material);
-		box.position.x = -1;
-		this.scene.add(box);
-
-		const geomSphere = new THREE.SphereGeometry(0.6, 512, 256);
-		const sphere = new THREE.Mesh(geomSphere, material);
-		sphere.position.x = 1;
-		this.scene.add(sphere);
-
-		// const boxHelper = new VertexNormalsHelper(box, 0.1, 0xffff00);
-		// this.scene.add(boxHelper);
-
-		// const sphereHelper = new VertexNormalsHelper(sphere, 0.1, 0xffff00);
-		// this.scene.add(sphereHelper);
+			torus.position.x = 2;
+			torusPivot.position.y = 0.5;
+			torusPivot.rotation.y = (THREE.MathUtils.degToRad(360) / cntItems) * i;
+		}
 	}
 
 	private setupEvents() {
@@ -138,6 +227,35 @@ class App {
 
 	private update(time: number) {
 		time *= 0.001;
+
+		const smallSpherePivot = this.scene.getObjectByName("smallSpherePivot");
+
+		if (smallSpherePivot) {
+			// smallSpherePivot.rotation.y = time;
+			const euler = new THREE.Euler(0, time, 0);
+			const quaterion = new THREE.Quaternion().setFromEuler(euler);
+			smallSpherePivot.setRotationFromQuaternion(quaterion);
+
+			// smallSpherePivot.quaternion.setFromEuler(euler);
+
+			const smallSphere = smallSpherePivot.children[0];
+
+			/*
+			smallSphere.getWorldPosition(this.light!.target.position);
+			this.helper!.update();
+			*/
+
+			/*
+			smallSphere.getWorldPosition(this.light!.position);
+			this.helper!.update();
+			*/
+
+			/*
+			// SpotLight
+			smallSphere.getWorldPosition(this.light!.target.position);
+			this.helper!.update();
+			*/
+		}
 	}
 
 	private render(time: number) {
