@@ -5,11 +5,13 @@ import {
 	OrbitControls,
 	RandomizedLight,
 	SoftShadows,
+	useAnimations,
+	useGLTF,
 	useHelper,
 } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useControls } from "leva";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
 	Camera,
 	type CameraHelper,
@@ -33,79 +35,53 @@ const torusMaterial = new MeshStandardMaterial({
 });
 
 function MyElement3D() {
-	const mesh1 = useRef<Mesh>(null);
-	const light = useRef<PointLight>(null);
-	const shadowCamera = useRef<CameraHelper>();
-
-	const { scene } = useThree();
-
-	useFrame((state) => {
-		const time = state.clock.elapsedTime;
-		const smallSpherePivot = state.scene.getObjectByName("smallSpherePivot")!;
-		smallSpherePivot.rotation.y = degToRad(time * 50);
+	const model = useGLTF("/model.glb");
+	const animations = useAnimations(model.animations, model.scene);
+	const { actionName } = useControls({
+		actionName: {
+			value: animations.names[1],
+			options: animations.names,
+		},
 	});
+	const [height, setHeight] = useState(0);
+
+	useEffect(() => {
+		const action = animations.actions[actionName];
+		action?.reset().fadeIn(0.5).play();
+
+		return () => {
+			action?.fadeOut(0.5);
+		};
+	}, [actionName, animations]);
+
+	useEffect(() => {
+		let minY = Number.POSITIVE_INFINITY,
+			maxY = Number.NEGATIVE_INFINITY;
+
+		model.scene.traverse((item) => {
+			if (item.isMesh) {
+				const geomBbox = item.geometry.boundingBox;
+				if (minY > geomBbox.min.y) minY = geomBbox.min.y;
+				if (maxY < geomBbox.max.y) maxY = geomBbox.max.y;
+			}
+		});
+
+		const h = maxY - minY;
+		setHeight(h);
+	}, [model.scene]);
 
 	return (
 		<>
 			<OrbitControls />
 			<axesHelper scale={10} />
 
-			<ambientLight intensity={0.1} />
-			<directionalLight
-				color="#ffffff"
-				intensity={5}
-				position={[0, 5, 0]}
-				castShadow
+			<Environment preset="sunset" />
+
+			<primitive
+				scale={5}
+				position-y={-(height / 2) * 5}
+				object={model.scene}
 			/>
-
-			<ContactShadows
-				position={[0, 0, 0]}
-				scale={10}
-				resolution={512}
-				color="#000000"
-				opacity={0.5}
-				blur={0.5}
-			/>
-
-			{/* <mesh receiveShadow rotation-x={degToRad(-90)}>
-				<planeGeometry args={[10, 10]} />
-				<meshStandardMaterial
-					color="#2c3e50"
-					roughness={0.5}
-					metalness={0.5}
-					side={DoubleSide}
-				/>
-			</mesh> */}
-
-			<mesh castShadow receiveShadow position-y={1.7}>
-				<torusKnotGeometry args={[1, 0.2, 128, 32]} />
-				<meshStandardMaterial color="#ffffff" roughness={0.1} metalness={0.2} />
-			</mesh>
-
-			{new Array(10).fill().map((item, index) => {
-				return (
-					<group key={index} rotation-y={degToRad(45 * index)}>
-						<mesh
-							castShadow
-							receiveShadow
-							geometry={torusGeometry}
-							material={torusMaterial}
-							position={[3, 0.5, 0]}
-						/>
-					</group>
-				);
-			})}
-
-			<group name="smallSpherePivot">
-				<mesh castShadow receiveShadow position={[3, 0.5, 0]}>
-					<sphereGeometry args={[0.3, 32, 32]} />
-					<meshStandardMaterial
-						color="#e74c3c"
-						roughness={0.2}
-						metalness={0.5}
-					/>
-				</mesh>
-			</group>
 		</>
 	);
 }
