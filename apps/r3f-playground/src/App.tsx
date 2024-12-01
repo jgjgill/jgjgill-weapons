@@ -5,9 +5,8 @@ import MyElement3D from "./MyElement3D";
 function App() {
 	return (
 		<Canvas
+			shadows
 			camera={{
-				near: 1,
-				far: 100,
 				position: [7, 7, 0],
 			}}
 		>
