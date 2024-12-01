@@ -4,7 +4,12 @@ import MyElement3D from "./MyElement3D";
 
 function App() {
 	return (
-		<Canvas>
+		<Canvas
+			camera={{
+				fov: 130,
+				position: [7, 7, 0],
+			}}
+		>
 			<MyElement3D />
 		</Canvas>
 	);
