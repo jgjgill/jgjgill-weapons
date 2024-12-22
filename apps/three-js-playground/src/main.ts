@@ -106,8 +106,6 @@ class App {
 		this.renderer.setSize(width, height);
 	}
 	private update(time: number) {
-		time *= 0.001;
-
 		const delta = this.clock.getDelta();
 		if (this.mixer) {
 			this.mixer.update(delta);

@@ -4,11 +4,14 @@ class CreditCardStrategy implements PaymentStrategy {
 	constructor(
 		private cardNumber: string,
 		private cvv: string,
-		private dateOfExpiry: string,
-		private cardHolderName: string,
+		private _dateOfExpiry: string,
+		private _cardHolderName: string,
 	) {}
 
 	validate(): boolean {
+		this._cardHolderName;
+		this._dateOfExpiry;
+
 		return this.cardNumber.length === 16 && this.cvv.length === 3;
 	}
 

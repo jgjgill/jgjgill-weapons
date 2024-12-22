@@ -7,6 +7,8 @@ class PayPalStrategy implements PaymentStrategy {
 	) {}
 
 	validate(): boolean {
+		this.password;
+
 		return this.email.includes("@");
 	}
 

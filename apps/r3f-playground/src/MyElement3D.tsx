@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
 	AccumulativeShadows,
 	ContactShadows,
@@ -24,12 +25,12 @@ import {
 	type CameraHelper,
 	DirectionalLight,
 	DoubleSide,
+	type Mesh,
 	MeshStandardMaterial,
+	type PointLight,
 	RectAreaLight,
 	TorusGeometry,
 	Vector3,
-	type Mesh,
-	type PointLight,
 } from "three";
 import { degToRad } from "three/src/math/MathUtils.js";
 
@@ -135,6 +136,7 @@ function MyElement3D() {
 
 			{new Array(10).fill().map((item, index) => {
 				return (
+					// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 					<group key={index} rotation-y={degToRad(45 * index)}>
 						<mesh
 							castShadow
