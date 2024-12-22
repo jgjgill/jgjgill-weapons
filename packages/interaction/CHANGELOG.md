@@ -1,5 +1,11 @@
 # @jgjgill/interaction
 
+## 1.0.5
+
+### Patch Changes
+
+- chore: version issue
+
 ## 1.0.4
 
 ### Patch Changes
