@@ -33,17 +33,11 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@react-three/drei": "^9.118.0",
-    "@react-three/fiber": "^8.17.10",
-    "motion": "^11.14.4",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "three": "^0.169.0"
-  },
   "devDependencies": {
-    "@chromatic-com/storybook": "^3.2.2",
+    "@chromatic-com/storybook": "^3.2.3",
     "@jgjgill/typescript-config": "workspace:*",
+    "@react-three/drei": "^9.120.4",
+    "@react-three/fiber": "^8.17.10",
     "@storybook/addon-essentials": "^8.4.7",
     "@storybook/addon-interactions": "^8.4.7",
     "@storybook/addon-onboarding": "^8.4.7",
@@ -51,22 +45,20 @@
     "@storybook/react": "^8.4.7",
     "@storybook/react-vite": "^8.4.7",
     "@storybook/test": "^8.4.7",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "@types/three": "^0.169.0",
-    "storybook": "^8.4.7",
-    "tsup": "^8.2.4",
-    "typescript": "^5.7.2",
-    "@react-three/drei": "^9.118.0",
-    "@react-three/fiber": "^8.17.10",
-    "motion": "^11.14.4",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@types/three": "^0.171.0",
+    "motion": "^11.15.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "three": "^0.169.0"
+    "storybook": "^8.4.7",
+    "three": "^0.171.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
   },
   "peerDependencies": {
     "react": "^18",
     "react-dom": "^18",
-    "three": "^0.169.0"
+    "three": "^0.171.0"
   }
 }
