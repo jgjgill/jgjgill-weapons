@@ -1,5 +1,11 @@
 # @jgjgill/interaction
 
+## 1.0.4
+
+### Patch Changes
+
+- fix: change dependencies about bundle size
+
 ## 1.0.3
 
 ### Patch Changes
