@@ -35,12 +35,11 @@
   "license": "ISC",
   "dependencies": {
     "@react-three/drei": "^9.120.4",
-    "@react-three/fiber": "^8.17.10"
+    "@react-three/fiber": "^8.17.10",
+    "@react-three/rapier": "^1.5.0",
+    "meshline": "^3.3.1"
   },
   "devDependencies": {
-    "three": "^0.171.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
     "@chromatic-com/storybook": "^3.2.3",
     "@jgjgill/typescript-config": "workspace:*",
     "@storybook/addon-essentials": "^8.4.7",
@@ -54,7 +53,10 @@
     "@types/react-dom": "^18.3.5",
     "@types/three": "^0.171.0",
     "motion": "^11.15.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "storybook": "^8.4.7",
+    "three": "^0.171.0",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2"
   },
