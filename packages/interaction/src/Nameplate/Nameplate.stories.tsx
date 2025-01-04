@@ -10,6 +10,9 @@ export default meta;
 type Story = StoryObj<typeof Nameplate>;
 
 export const Default: Story = {
-	args: { mainText: "jgjgill", subText: "Frontend Developer" },
+	args: {
+		mainText: "jgjgill",
+		subText: "Frontend Developer",
+	},
 	decorators: [(Story) => <Story />],
 };

@@ -7,11 +7,6 @@ body,
 	padding: 0;
 }
 
-body,
-.sbdocs canvas {
-	background-color: #121212;
-}
-
 .sbdocs canvas {
 	min-height: 20rem;
 }

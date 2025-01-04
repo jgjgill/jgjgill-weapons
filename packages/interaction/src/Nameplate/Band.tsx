@@ -262,11 +262,11 @@ export function Band({ src, mainText, subText }: BandProps) {
 				<meshLineGeometry />
 				<meshLineMaterial
 					lineWidth={1}
-					color="#303030"
+					color="black"
 					depthTest={false}
 					map={bandTexture}
 					useMap={1}
-					opacity={0.8}
+					opacity={1}
 				/>
 			</mesh>
 		</>
