@@ -1,7 +1,7 @@
 {
   "name": "@jgjgill/interaction",
   "private": false,
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

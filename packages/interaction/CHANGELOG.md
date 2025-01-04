@@ -1,5 +1,11 @@
 # @jgjgill/interaction
 
+## 1.0.7
+
+### Patch Changes
+
+- fix band color and change dependency config
+
 ## 1.0.6
 
 ### Patch Changes
