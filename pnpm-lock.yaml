@@ -232,6 +232,9 @@ importers:
       '@types/three':
         specifier: ^0.171.0
         version: 0.171.0
+      chromatic:
+        specifier: ^11.22.0
+        version: 11.22.0
       motion:
         specifier: ^11.15.0
         version: 11.15.0(react-dom@18.3.1)(react@18.3.1)
@@ -962,7 +965,7 @@ packages:
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
     dependencies:
-      chromatic: 11.20.2
+      chromatic: 11.22.0
       filesize: 10.1.6
       jsonfile: 6.1.0
       react-confetti: 6.1.0(react@18.3.1)
@@ -4292,8 +4295,8 @@ packages:
       readdirp: 4.0.2
     dev: true
 
-  /chromatic@11.20.2:
-    resolution: {integrity: sha512-c+M3HVl5Y60c7ipGTZTyeWzWubRW70YsJ7PPDpO1D735ib8+Lu3yGF90j61pvgkXGngpkTPHZyBw83lcu2JMxA==}
+  /chromatic@11.22.0:
+    resolution: {integrity: sha512-u1kAPR9lj9aFzsCp0iWPXBbsKgcxFU7iJO6mFbgNHGVg+YPBqiJMuvgB8EQHdNbHjk5amFnGnIz/Ww8fK3t9Hw==}
     hasBin: true
     peerDependencies:
       '@chromatic-com/cypress': ^0.*.* || ^1.0.0

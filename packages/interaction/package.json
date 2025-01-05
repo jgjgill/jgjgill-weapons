@@ -2,7 +2,7 @@
   "name": "@jgjgill/interaction",
   "private": false,
   "version": "1.0.8",
-  "description": "",
+  "description": "React Three Fiber 기반의 3D 인터랙션 컴포넌트 라이브러리입니다. 사용자와 상호작용 가능한 3D 컴포넌트를 제공합니다.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -30,8 +30,22 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
-  "keywords": [],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jgjgill/jgjgill-weapons.git",
+    "directory": "packages/interaction"
+  },
+  "homepage": "https://677a8797b65e105991c6835b-hvnklphovx.chromatic.com/",
+  "keywords": [
+    "react",
+    "three.js",
+    "react-three/fiber",
+    "3d",
+    "interactive",
+    "components",
+    "typescript"
+  ],
+  "author": "jgjgill",
   "license": "ISC",
   "dependencies": {
     "@react-three/drei": "^9.120.4",
@@ -41,6 +55,7 @@
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.3",
     "@jgjgill/typescript-config": "workspace:*",
+    "@react-three/fiber": "^8.17.10",
     "@storybook/addon-essentials": "^8.4.7",
     "@storybook/addon-interactions": "^8.4.7",
     "@storybook/addon-onboarding": "^8.4.7",
@@ -51,19 +66,19 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@types/three": "^0.171.0",
+    "chromatic": "^11.22.0",
     "motion": "^11.15.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "storybook": "^8.4.7",
     "three": "^0.171.0",
     "tsup": "^8.3.5",
-    "typescript": "^5.7.2",
-    "@react-three/fiber": "^8.17.10"
+    "typescript": "^5.7.2"
   },
   "peerDependencies": {
+    "@react-three/fiber": "^8.17.10",
     "react": "^18",
     "react-dom": "^18",
-    "three": "^0.171.0",
-    "@react-three/fiber": "^8.17.10"
+    "three": "^0.171.0"
   }
 }
