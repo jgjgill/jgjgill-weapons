@@ -1,5 +1,11 @@
 # @jgjgill/interaction
 
+## 1.0.9
+
+### Patch Changes
+
+- add npm info
+
 ## 1.0.8
 
 ### Patch Changes
