@@ -17,6 +17,8 @@ import {
 } from "@react-three/rapier";
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
 import { Text, useGLTF, useTexture } from "@react-three/drei";
+import FabicBand from "../../asset/fabic-band.jpg";
+import Tag from "../../asset/tag.glb?url";
 
 declare module "@react-three/fiber" {
 	interface ThreeElements {
@@ -27,9 +29,7 @@ declare module "@react-three/fiber" {
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
-useTexture.preload(
-	"https://raw.githubusercontent.com/jgjgill/jgjgill-weapons/main/packages/interaction/public/tag.glb",
-);
+useTexture.preload(Tag);
 
 interface DragPosition extends THREE.Vector3 {
 	x: number;
@@ -65,9 +65,7 @@ export function Band({ src, mainText, subText }: BandProps) {
 	};
 
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	const { nodes, materials }: any = useGLTF(
-		"https://raw.githubusercontent.com/jgjgill/jgjgill-weapons/main/packages/interaction/public/tag.glb",
-	);
+	const { nodes, materials }: any = useGLTF(Tag);
 
 	// 여러 점들을 부드럽게 연결하는 곡선 생성
 	const [curve] = useState<THREE.CatmullRomCurve3>(
@@ -156,9 +154,7 @@ export function Band({ src, mainText, subText }: BandProps) {
 	curve.curveType = "catmullrom";
 	curve.tension = 0.5; // tension 값을 추가하여 곡선의 부드러움을 조절할 수 있습니다
 
-	const bandTexture = useTexture(
-		"https://raw.githubusercontent.com/jgjgill/jgjgill-weapons/main/packages/interaction/public/fabic-band.jpg",
-	); // 직물 질감 텍스처
+	const bandTexture = useTexture(FabicBand) as THREE.Texture; // 직물 질감 텍스처
 
 	return (
 		<>
