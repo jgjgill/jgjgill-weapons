@@ -1,5 +1,11 @@
 # @jgjgill/interaction
 
+## 1.0.10
+
+### Patch Changes
+
+- test loader
+
 ## 1.0.9
 
 ### Patch Changes

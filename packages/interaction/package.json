@@ -1,7 +1,7 @@
 {
   "name": "@jgjgill/interaction",
   "private": false,
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "React Three Fiber 기반의 3D 인터랙션 컴포넌트 라이브러리입니다. 사용자와 상호작용 가능한 3D 컴포넌트를 제공합니다.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
