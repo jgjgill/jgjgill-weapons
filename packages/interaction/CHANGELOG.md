@@ -1,5 +1,23 @@
 # @jgjgill/interaction
 
+## 1.0.13
+
+### Patch Changes
+
+- feat dataurl
+
+## 1.0.12
+
+### Patch Changes
+
+- chore test
+
+## 1.0.11
+
+### Patch Changes
+
+- fix build
+
 ## 1.0.10
 
 ### Patch Changes
