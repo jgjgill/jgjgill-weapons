@@ -46,7 +46,7 @@ function App() {
 
 ## 문서
 
-예제는 [Storybook](https://677a8797b65e105991c6835b-hvnklphovx.chromatic.com/)에서 확인하실 수 있어요.
+예제는 [Chromatic - Library](https://www.chromatic.com/library?appId=677a8797b65e105991c6835b)에서 확인하실 수 있어요.
 
 ## 컴포넌트
 
