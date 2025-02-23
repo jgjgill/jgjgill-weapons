@@ -1,0 +1,23 @@
+{
+  "name": "@jgjgill/graphql-playground",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "start-n+1": "node src/index.js",
+    "start-dataloader": "node src/index-dataloader.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.11.3",
+    "better-sqlite3": "^11.8.1",
+    "dataloader": "^2.2.3",
+    "graphql": "^16.10.0",
+    "graphql-tag": "^2.12.6"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}
