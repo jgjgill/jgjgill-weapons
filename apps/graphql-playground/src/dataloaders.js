@@ -313,8 +313,6 @@ function dispatchBatch<K, V>(
   // Call the provided batchLoadFn for this loader with the batch's keys and
   // with the loader as the `this` context.
   let batchPromise;
-  // biome-ignore lint/correctness/noUnreachable: <explanation>
-  // biome-ignore lint/correctness/noUnreachable: <explanation>
     try {
     batchPromise = loader._batchLoadFn(batch.keys);
   } catch (e) {
