@@ -1,5 +1,11 @@
 # @jgjgill/hooks
 
+## 1.0.5
+
+### Patch Changes
+
+- add useCalendar
+
 ## 1.0.4
 
 ### Patch Changes
