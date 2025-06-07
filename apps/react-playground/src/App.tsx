@@ -1,24 +1,25 @@
-import { useIsChanged, usePrevious, useUnmount } from "@jgjgill/hooks";
-import { useState } from "react";
+import styles from "./App.module.css";
+import { useHorizontalScroll } from "./useHorizontalScroll";
 
 function App() {
-	const [count, setCount] = useState(0);
-
-	useUnmount(() => {
-		console.log("unmount");
-	});
-
-	const prevCount = usePrevious(count);
-	const isChanged = useIsChanged(count);
+	const { scrollContainerRef, scrollHandlers } = useHorizontalScroll();
 
 	return (
 		<div>
-			<p>Current Count: {count}</p>
-			<p>Previous Count: {prevCount}</p>
-			<p>Has Count Changed?: {isChanged ? "Yes" : "No"}</p>
-			<button type="button" onClick={() => setCount(count + 1)}>
-				Increment
-			</button>
+			<div
+				ref={scrollContainerRef}
+				className={styles.scrollContainer}
+				{...scrollHandlers}
+			>
+				{Array.from({ length: 10 }, (_, i) => (
+					<div key={`temp-${i + 1}`} className={styles.scrollItem}>
+						<div>
+							<div>카드 {i + 1}</div>
+							<div>클릭!</div>
+						</div>
+					</div>
+				))}
+			</div>
 		</div>
 	);
 }

@@ -1,0 +1,32 @@
+.scrollContainer {
+	display: flex;
+	overflow-x: auto;
+	gap: 15px;
+	padding: 15px;
+	background-color: #f5f5f5;
+	border-radius: 8px;
+	border: 2px solid #ddd;
+	user-select: none;
+
+	/* 스크롤바 숨기기 */
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE/Edge */
+}
+
+.scrollContainer::-webkit-scrollbar {
+	display: none; /* Chrome, Safari */
+}
+
+.scrollItem {
+	flex-shrink: 0;
+	width: 180px;
+	height: 100px;
+	background-color: #007bff;
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: white;
+	font-weight: 600;
+	transition: transform 0.2s ease;
+}
